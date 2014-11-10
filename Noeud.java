@@ -5,22 +5,22 @@
  * @version  2014-11-09
  */
 public class Noeud {
-    private int valeur;
+    private InfoBloc valeur;
     private Noeud suivant;
     
     public Noeud(){
     }
     
-    public Noeud (int valeur){
+    public Noeud (InfoBloc valeur){
         this.valeur = valeur;
     }
 
-    public Noeud (int valeur, Noeud suivant){
+    public Noeud (InfoBloc valeur, Noeud suivant){
         this.valeur = valeur;
         this.suivant = suivant;
     }
     
-    public int getValeur(){
+    public InfoBloc getValeur(){
         return valeur;
     }
     
@@ -28,7 +28,7 @@ public class Noeud {
         return suivant;
     }
     
-    public void setValeur(int valeur){
+    public void setValeur(InfoBloc valeur){
         this.valeur = valeur;
     }
     
