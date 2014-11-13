@@ -1,1 +1,104 @@
-1
+import java.io.IOException;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Jean-Frédéric Samson
+ */
+public class DemarrerJeuCache {
+    private static String message;
+    
+
+    public static void main(String[] args) {
+        
+        //initilisation de plusieurs infobloc
+        InfoBloc toto = new InfoBloc(1,2,2);
+        InfoBloc toto1 = new InfoBloc(2,3,3);
+        InfoBloc toto2 = new InfoBloc(5,9,9);
+        InfoBloc toto3 = new InfoBloc(4,6,6);
+        InfoBloc toto4 = new InfoBloc(8,11,11);
+        InfoBloc toto5 = new InfoBloc(10,15,15);
+        
+        //création d'une liste chaînée
+        ListeChainee liste = new ListeChainee();
+        
+        //ajout d'un élément au début
+        liste.ajouterDebut(toto);
+        //ajout de deux éléments à la fin
+        liste.ajouterFin(toto3);
+        liste.ajouterFin(toto2);
+        //ajout d'un élément au début
+        liste.ajouterDebut(toto4);
+        //ajout de deux éléments à la position courante
+        liste.ajouterPositionCourante(toto5);
+        liste.ajouterPositionCourante(toto1);
+        
+        //N.B. La positionCourante est toujours égale à la position du dernier
+        //élément ajouté
+        
+        //affichage des éléments ajoutés
+        afficher(liste);
+        
+        //suppression d'un élément à la position courante
+        liste.supprimer();
+        //on déplace la positionCourante à la fin
+        liste.setPositionFin();
+        //on supprimer l'élément à la fin
+        liste.supprimer();
+        
+        //Affichage des éléments suite à la suppression
+        afficher(liste);
+        
+        //affichage de l'élément à la positionCourante
+        System.out.println(liste.getNoeud());
+        //Déplacement de la positionCourante vers le Noeud suivant
+        liste.nextPositionCourante();
+        //Affichage de l'élément à la positionCourante
+        System.out.println(liste.getNoeud());
+        
+        /*
+        Prendre note que les démarches ci-dessus sont là pour démontrer le 
+        fonctionnement de notre liste chaînée et de toutes ses méthodes.
+        Ce n'est que temporaire et facilite la correction.
+        */
+
+        
+        //étant donné que la méthode appelée throw des exception
+        //on met un try catch pour savoir laquelle est retournée
+        try{
+            //on récupère un fichier dessin
+            GrilleDessin dessin = 
+                    (GrilleDessin)UtilitaireFichier.recupererFichier();
+            
+            //on affiche la validité du dessin
+            if(dessin.estValide()){
+                GrilleJeu gj = new GrilleJeu(dessin);
+            }else{
+                message = "Dessin Invalide !";
+            }
+            System.out.println(message);
+        }catch(IOException e){
+            System.out.println("Une exception I/O s'est produite.");
+        }catch(ClassNotFoundException e){
+            System.out.println("Une exception CNF s'est produite.");
+        }
+    }
+    
+    //méthode qui affiche les données des infobloc contenus dans la liste
+    //en parcourant du premier noeud au dernier.
+    public static void afficher(ListeChainee liste){
+        liste.setPositionDebut();
+        for (int i = 0; i < liste.getNbNoeuds(); i++){
+            System.out.println(liste.getNoeud());
+            liste.nextPositionCourante();
+        }
+        System.out.println("Le nombre de noeuds total est de : " + liste.getNbNoeuds());
+        System.out.println("*********************************************");
+    }
+    
+}
