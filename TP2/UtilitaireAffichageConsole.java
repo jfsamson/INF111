@@ -31,10 +31,10 @@ public class UtilitaireAffichageConsole {
 	
 		//Sert � obtenir les donn�es des diff�rentes instances
 		InfoBloc[] tabBlocLignes; 
-		GrilleDessin dessin = grille.getDessin();
+		GrilleDessin dessin = grille.getDessin_cache();
 		taille = dessin.getTaille();
 		
-        //Proc�dure locale qui affiche les indices des colonnes
+                //Procédure locale qui affiche les indices des colonnes
 		afficherColonnes(grille, taille);
 		
 		//On affiche les espace d'alignement
@@ -102,7 +102,7 @@ public class UtilitaireAffichageConsole {
 		/*
 		 * Termes :  Un bloc a pls cases et pls blocs par colonne
 		 * 
-		 * STRAT�GIE : On se cr�e un vecteur dont chaque case
+		 * STRAT�GIE : On se crée un vecteur dont chaque case
 		 *                         contiendra un tableau d�crivant les blocs
 		 *                         d'un colonne.  
 		 * 
@@ -129,8 +129,8 @@ public class UtilitaireAffichageConsole {
 		
 		int max = taille;
 
-		//Pour chaque lignes, il faut faire un enter apr�s avoir afficher le nombre de
-		//blocs sur une m�me ligne
+		//Pour chaque lignes, il faut faire un enter aprés avoir afficher le nombre de
+		//blocs sur une même ligne
 		for(int ligne = 0; ligne < taille; ligne++){
 
 
