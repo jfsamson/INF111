@@ -11,13 +11,37 @@ public class GrilleJeu {
 
     private GrilleDessin dessin_orig;
     private GrilleDessin dessin_cache;
+
+    
+    //Évite pleins d'appels à l'accesseur
+    private int taille;
+    
+    //Le nombre de vie restante de l'utilisateur
     private int nbVies;
 
-    //Évite pls appels à l'accesseur
-    private int taille;
+    public int getNbVies() {
+        return nbVies;
+    }
+    
+    public void setNbVies(int nbVies){
+        this.nbVies = nbVies;
+    }
+    
+    public GrilleDessin getDessin_orig() {
+        return dessin_orig;
+    }
+    
+    public GrilleDessin getDessin_cache() {
+        return dessin_cache;
+    }
+
+    public void setDessin_cache(GrilleDessin dessin_cache) {
+        this.dessin_cache = dessin_cache;
+    }
     
     public GrilleJeu(GrilleDessin dessin) {
         dessin_orig = dessin;
+        dessin_cache = new GrilleDessin(dessin.getTaille(), null);
         this.taille = dessin.getTaille();
         tabBlocLignes = new ListeChainee[taille];
         tabBlocColonnes = new ListeChainee[taille];
@@ -32,12 +56,12 @@ public class GrilleJeu {
      * @return Un tableau des tous les blocs sur une ligne
      */
     public InfoBloc[] getInfoBlocLigne(int ligne) {
-        int nbNoeud = tabBlocLignes[ligne-1].getNbNoeuds();
+        int nbNoeud = tabBlocLignes[ligne].getNbNoeuds();
         InfoBloc[] ib = new InfoBloc[nbNoeud];
-        tabBlocLignes[ligne-1].setPositionDebut();
+        tabBlocLignes[ligne].setPositionDebut();
         for (int i = 0; i < nbNoeud; i++) {
-            ib[i] = tabBlocLignes[ligne-1].getNoeud();
-            tabBlocLignes[ligne-1].nextPositionCourante();
+            ib[i] = tabBlocLignes[ligne].getNoeud();
+            tabBlocLignes[ligne].nextPositionCourante();
         }
         return ib;
     }
@@ -49,14 +73,14 @@ public class GrilleJeu {
      * @return Un tableau des tous les blocs sur une colonne
      */
     public InfoBloc[] getInfoBlocColonne(int colonne) {
-         int nbNoeud = tabBlocColonnes[colonne-1].getNbNoeuds();
+        int nbNoeud = tabBlocColonnes[colonne].getNbNoeuds();
         InfoBloc[] ib = new InfoBloc[nbNoeud];
-        tabBlocColonnes[colonne-1].setPositionDebut();
+        tabBlocColonnes[colonne].setPositionDebut();
         for (int i = 0; i < nbNoeud; i++) {
-            ib[i] = tabBlocColonnes[colonne-1].getNoeud();
-            tabBlocColonnes[colonne-1].nextPositionCourante();
-        }
-        return ib;
+            ib[i] = tabBlocColonnes[colonne].getNoeud();
+            tabBlocColonnes[colonne].nextPositionCourante();
+       }
+       return ib;
     }
 
     public void setNombreVie() {
@@ -160,8 +184,6 @@ public class GrilleJeu {
             liste.ajouterFin(ib);
             tabBlocColonnes[tabBlocLignes.length-1] = liste;
         }
-        afficherLigne(15);
-        afficherColonne(2);
         System.out.println(validateNbCases());
     }
     
@@ -203,6 +225,7 @@ public class GrilleJeu {
                     valideLignes = false;
                     break;
                 }
+                value++;
             }
         }
         for (int i = 0; i < tabBlocColonnes.length; i++) {
@@ -217,6 +240,7 @@ public class GrilleJeu {
                     valideColonnes = false;
                     break;
                 }
+                value++;
             }
         }
         
@@ -228,9 +252,53 @@ public class GrilleJeu {
     }
     
     public void ajusterJeu(int i, int j){
-
+        boolean trouveLigne = false;
+        boolean trouveColonne = false;
+        
+        tabBlocLignes[i].setPositionDebut();
+        
+        while(!trouveLigne){
+             InfoBloc bloc = new InfoBloc(tabBlocLignes[i].getNoeud());
+             int debut = bloc.getDebut();
+             
+             if(j > debut && j < debut + bloc.getNbCases()){ 
+                 bloc.setNbCasesRestantes(bloc.getNbCasesRestantes()-1);
+                 tabBlocLignes[i].supprimer();      
+                 tabBlocLignes[i].ajouterPositionCourante(bloc);
+                 xCase(i, j, true);
+                 
+                 trouveLigne = true;
+             }
+                
+             
+             tabBlocLignes[i].nextPositionCourante();
+        }
+        
+        tabBlocColonnes[j].setPositionDebut();
+        
+        while(!trouveColonne){
+             InfoBloc bloc = new InfoBloc(tabBlocColonnes[j].getNoeud());
+             int debut = bloc.getDebut();
+             
+             if(i > debut && i < debut + bloc.getNbCases()){ 
+                 bloc.setNbCasesRestantes(bloc.getNbCasesRestantes()-1);
+                 tabBlocColonnes[j].supprimer();      
+                 tabBlocColonnes[j].ajouterPositionCourante(bloc);
+                 xCase(i, j, true);
+                     
+                 trouveColonne = true;
+             }
+             
+             tabBlocColonnes[j].nextPositionCourante();
+        }
+        
     }
     
+    public void xCase(int i, int j, boolean etat){
+        dessin_cache.colorieCase(i, j, etat);
+    }
+    
+    /*
     public void afficherLigne(int ligne){
         InfoBloc [] infoBloc = getInfoBlocLigne(ligne);
         for(int i=0; i<infoBloc.length; i++){
@@ -245,6 +313,6 @@ public class GrilleJeu {
             int result = i + 1;
             System.out.println("Colonne :" + colonne + "\t Bloc: " + result + " : " + infoBloc[i].toString());           
         }
-    }
+    }*/
 
 }
