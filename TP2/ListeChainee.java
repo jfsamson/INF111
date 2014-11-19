@@ -110,7 +110,7 @@ public class ListeChainee {
             //ailleurs qu'au début et la fin
             }else{
                 precedent.suivant = positionCourante.suivant;
-                positionCourante = positionCourante.suivant;
+                positionCourante = precedent;
             }
             message = "Élément supprimé avec succès !";
         }
@@ -143,4 +143,3 @@ public class ListeChainee {
     }
     
 }
-
