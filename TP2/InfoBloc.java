@@ -60,4 +60,3 @@ public class InfoBloc {
         return "Les valeurs sont les suivantes : " + this.getDebut() +  ", " + this.getNbCases() + ", " + this.getNbCasesRestantes();
     }
 }
-
