@@ -46,7 +46,7 @@ public class GrilleDessin implements Serializable {
         grille = new boolean[taille][taille];
         this.nom = nom;
     }
-
+    
     /**
      * La position (i,j) sera retournée
      *
